@@ -1,13 +1,21 @@
 local wezterm = require("wezterm")
 
 local config = wezterm.config_builder()
+local is_windows = function()
+	return wezterm.target_triple:find("windows") ~= nil
+end
 
-config.font = wezterm.font("RobotoMono Nerd Font")
-config.default_prog = { "pwsh.exe", "-NoLogo" }
+if is_windows() then
+	config.font = wezterm.font("RobotoMono Nerd Font")
+	config.default_prog = { "pwsh.exe", "-NoLogo" }
+else
+	config.font = wezterm.font("RobotoMonoNerd Font")
+	config.enable_wayland = false
+end
+
 config.color_scheme = "OneDark (base16)"
 config.window_decorations = "RESIZE"
 config.window_background_opacity = 0.9
-config.enable_wayland = false
 
 wezterm.on("gui-startup", function(cmd)
 	local screen = wezterm.gui.screens().active
